@@ -187,8 +187,11 @@ export function LandingPage({ locale }: LandingPageProps) {
 
   useEffect(() => {
     document.documentElement.lang = locale
-    void i18n.changeLanguage(locale)
     window.localStorage.setItem('morpho-lang', locale)
+
+    if (i18n.language !== locale) {
+      void i18n.changeLanguage(locale)
+    }
 
     const title = t('seo.title')
     const description = t('seo.description')
@@ -203,7 +206,7 @@ export function LandingPage({ locale }: LandingPageProps) {
     setHeadElement('meta[property="og:description"]', 'content', ogDescription)
     setHeadElement('meta[property="og:url"]', 'content', ogUrl)
     setHeadElement('link[rel="canonical"]', 'href', canonicalUrl)
-  }, [i18n, locale, location.hash, location.pathname, t])
+  }, [i18n.language, locale, location.hash, location.pathname, t])
 
   useEffect(() => {
     if (consent === 'accepted') {
