@@ -1,8 +1,3 @@
-const DEFAULT_BUSINESS_EMAIL = 'reservations@morphoglamping.com'
-const DEFAULT_BUSINESS_PHONE = '+50600000000'
-const DEFAULT_WHATSAPP_NUMBER = '+50600000000'
-const DEFAULT_WHATSAPP_MESSAGE = 'Hola, quisiera consultar disponibilidad en Morpho Glamping.'
-
 const env = import.meta.env
 
 function readEnv(value: string | undefined, fallback = '') {
@@ -31,17 +26,17 @@ function buildWhatsAppHref(number: string, message: string) {
   return `https://wa.me/${dialableNumber}?text=${encodeURIComponent(message)}`
 }
 
-const businessEmail = readEnv(env.VITE_BUSINESS_EMAIL, DEFAULT_BUSINESS_EMAIL)
-const businessPhone = readEnv(env.VITE_BUSINESS_PHONE, DEFAULT_BUSINESS_PHONE)
-const whatsappNumber = readEnv(env.VITE_WHATSAPP_NUMBER, DEFAULT_WHATSAPP_NUMBER)
-const whatsappMessage = readEnv(env.VITE_WHATSAPP_MESSAGE, DEFAULT_WHATSAPP_MESSAGE)
+const businessEmail = readEnv(env.VITE_BUSINESS_EMAIL)
+const businessPhone = readEnv(env.VITE_BUSINESS_PHONE)
+const whatsappNumber = readEnv(env.VITE_WHATSAPP_NUMBER)
+const whatsappMessage = readEnv(env.VITE_WHATSAPP_MESSAGE)
 
 export const siteConfig = {
   contact: {
     email: businessEmail,
     emailHref: buildMailtoHref(businessEmail),
     phone: businessPhone,
-    phoneHref: `tel:${toDialableNumber(businessPhone)}`,
+    phoneHref: businessPhone ? `tel:${toDialableNumber(businessPhone)}` : '',
     whatsappNumber,
     whatsappMessage,
     whatsappHref: buildWhatsAppHref(whatsappNumber, whatsappMessage),

@@ -945,6 +945,19 @@ main {
   box-shadow: 0 12px 40px rgba(17, 17, 17, 0.08);
 }
 
+.cookie-bar__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.cookie-bar__button {
+  min-height: 2.5rem;
+  padding-inline: 1rem;
+  white-space: nowrap;
+}
+
 .cookie-bar p {
   margin: 0;
   font-size: 0.85rem;
@@ -1534,6 +1547,14 @@ body.nav-menu-open {
     align-items: stretch;
     width: calc(100% - 1rem);
     bottom: calc(0.75rem + var(--safe-bottom));
+  }
+
+  .cookie-bar__actions {
+    margin-left: 0;
+  }
+
+  .cookie-bar__button {
+    width: 100%;
   }
 
   .footer {

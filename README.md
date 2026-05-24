@@ -41,8 +41,4 @@ npm run build
 npm run lint
 ```
 
-## Notes
 
-- Smooth scrolling is handled with Lenis.
-- Scroll-driven reveals use GSAP + ScrollTrigger.
-- The calendar is lazy-loaded so it ships in its own chunk.

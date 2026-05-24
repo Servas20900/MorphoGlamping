@@ -9,7 +9,8 @@ const resources = {
         stay: 'Stay',
         gallery: 'Gallery',
         experience: 'Experience',
-        availability: 'Dates',
+        rates: 'Rates',
+        availability: 'Availability',
         location: 'Location',
         faq: 'FAQ',
         reserveCta: 'Reserve',
@@ -102,6 +103,11 @@ const resources = {
         title: 'The Space',
         body:
           'A tighter, more architectural selection of the dome, the terrace and the surrounding atmosphere.',
+      },
+      rates: {
+        title: 'Rates',
+        body:
+          'Clear pricing, booking channels and the minimum stay rules at a glance.',
       },
       availability: {
         title: 'Availability',
@@ -227,10 +233,23 @@ const resources = {
       footer: {
         copy: 'Editorial landing page concept for Morpho Glamping in Nuevo Arenal, Costa Rica.',
       },
+      seo: {
+        title: 'Morpho Glamping | Luxury without noise on Lago Arenal',
+        description: 'Private glamping retreat for couples in Nuevo Arenal, Costa Rica.',
+        ogTitle: 'Morpho Glamping | Luxury without noise on Lago Arenal',
+        ogDescription: 'Private glamping retreat for couples in Nuevo Arenal, Costa Rica.',
+      },
+      notFound: {
+        title: 'Page not found',
+        body: 'The page you are looking for does not exist. Return to the Morpho Glamping landing page to continue.',
+        cta: 'Go to the landing page',
+      },
       cookies: {
         body:
           'We use essential cookies and privacy-friendly analytics to improve the booking experience and site performance.',
-        accept: 'Accept cookies',
+        acceptAll: 'Accept all',
+        necessaryOnly: 'Only necessary',
+        reject: 'Reject',
       },
     },
   },
@@ -241,7 +260,8 @@ const resources = {
         stay: 'Estancia',
         gallery: 'Galería',
         experience: 'Experiencia',
-        availability: 'Fechas',
+        rates: 'Tarifas',
+        availability: 'Disponibilidad',
         location: 'Ubicación',
         faq: 'FAQ',
         reserveCta: 'Reservar',
@@ -334,6 +354,11 @@ const resources = {
         title: 'El espacio',
         body:
           'Una selección más arquitectónica del domo, la terraza y la atmósfera que lo rodea.',
+      },
+      rates: {
+        title: 'Tarifas',
+        body:
+          'Precios claros, canales de reserva y reglas de estadía mínima de un vistazo.',
       },
       availability: {
         title: 'Disponibilidad',
@@ -462,10 +487,23 @@ const resources = {
       footer: {
         copy: 'Concepto de landing editorial para Morpho Glamping en Nuevo Arenal, Costa Rica.',
       },
+      seo: {
+        title: 'Morpho Glamping | Glamping de lujo sobre el Lago Arenal',
+        description: 'Refugio privado de glamping para parejas en Nuevo Arenal, Costa Rica.',
+        ogTitle: 'Morpho Glamping | Glamping de lujo sobre el Lago Arenal',
+        ogDescription: 'Refugio privado de glamping para parejas en Nuevo Arenal, Costa Rica.',
+      },
+      notFound: {
+        title: 'Página no encontrada',
+        body: 'La página que buscás no existe. Volvé a la landing de Morpho Glamping para continuar.',
+        cta: 'Ir a la landing',
+      },
       cookies: {
         body:
           'Usamos cookies esenciales y analítica respetuosa con la privacidad para mejorar la experiencia de reserva y el rendimiento del sitio.',
-        accept: 'Aceptar cookies',
+        acceptAll: 'Aceptar todo',
+        necessaryOnly: 'Solo necesarias',
+        reject: 'Rechazar',
       },
     },
   },

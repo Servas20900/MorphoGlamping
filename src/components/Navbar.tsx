@@ -1,22 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { siteBrand } from '../data/site'
+import type { Locale, SectionKey } from '../config/routes'
 
 type NavProps = {
-  language: 'es' | 'en'
-  onLanguageChange: (language: 'es' | 'en') => void
+  locale: Locale
   activeSection: string
-  onNavigate: (sectionId: string) => void
+  homeHref: string
+  homeSectionId: string
+  reserveHref: string
+  homeLabel: string
+  reserveLabel: string
+  links: Array<{ key: SectionKey; label: string; href: string }>
+  onLanguageChange: (language: Locale) => void
+  onNavigate: (href: string) => void
 }
-
-const NAV_LINKS = [
-  ['stay', 'stay'],
-  ['gallery', 'gallery'],
-  ['experience', 'experience'],
-  ['availability', 'availability'],
-  ['location', 'location'],
-  ['faq', 'faq'],
-] as const
 
 const MOBILE_BREAKPOINT = 960
 
@@ -32,8 +29,18 @@ function LanguageIcon() {
   )
 }
 
-export function Navbar({ language, onLanguageChange, activeSection, onNavigate }: NavProps) {
-  const { t } = useTranslation()
+export function Navbar({
+  locale,
+  activeSection,
+  homeHref,
+  homeSectionId,
+  reserveHref,
+  homeLabel,
+  reserveLabel,
+  links,
+  onLanguageChange,
+  onNavigate,
+}: NavProps) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const barRef = useRef<HTMLDivElement>(null)
@@ -41,8 +48,8 @@ export function Navbar({ language, onLanguageChange, activeSection, onNavigate }
   const closeMenu = useCallback(() => setMenuOpen(false), [])
 
   const navigate = useCallback(
-    (sectionId: string) => {
-      onNavigate(sectionId)
+    (href: string) => {
+      onNavigate(href)
       closeMenu()
     },
     [closeMenu, onNavigate],
@@ -105,18 +112,18 @@ export function Navbar({ language, onLanguageChange, activeSection, onNavigate }
     return () => window.removeEventListener('resize', onResize)
   }, [closeMenu])
 
-  const renderLink = (key: string, sectionId: string, variant: 'bar' | 'drawer' = 'bar') => (
+  const renderLink = (key: SectionKey, label: string, href: string, variant: 'bar' | 'drawer' = 'bar') => (
     <a
       key={`${variant}-${key}`}
-      href={`#${sectionId}`}
-      className={`navbar__link navbar__link--${variant} ${activeSection === sectionId ? 'navbar__link--active' : ''}`}
-      aria-current={activeSection === sectionId ? 'page' : undefined}
+      href={href}
+      className={`navbar__link navbar__link--${variant} ${activeSection === href.split('#')[1] ? 'navbar__link--active' : ''}`}
+      aria-current={activeSection === href.split('#')[1] ? 'page' : undefined}
       onClick={(event) => {
         event.preventDefault()
-        navigate(sectionId)
+        navigate(href)
       }}
     >
-      {t(`nav.${key}`)}
+      {label}
     </a>
   )
 
@@ -138,13 +145,13 @@ export function Navbar({ language, onLanguageChange, activeSection, onNavigate }
           </button>
 
           <a
-            className={`navbar__brand ${activeSection === 'home' ? 'navbar__brand--active' : ''}`}
-            href="#home"
+            className={`navbar__brand ${activeSection === homeSectionId ? 'navbar__brand--active' : ''}`}
+            href={homeHref}
             aria-label={`${siteBrand.name} — volver arriba`}
-            aria-current={activeSection === 'home' ? 'page' : undefined}
+            aria-current={activeSection === homeSectionId ? 'page' : undefined}
             onClick={(event) => {
               event.preventDefault()
-              navigate('home')
+              navigate(homeHref)
             }}
           >
             <span className="navbar__logo-wrap">
@@ -164,29 +171,29 @@ export function Navbar({ language, onLanguageChange, activeSection, onNavigate }
           </a>
 
           <nav className="navbar__nav navbar__nav--desktop" aria-label="Primary navigation">
-            {NAV_LINKS.map(([key, sectionId]) => renderLink(key, sectionId, 'bar'))}
+            {links.map(({ key, label, href }) => renderLink(key, label, href, 'bar'))}
           </nav>
 
           <div className="navbar__actions navbar__actions--desktop">
             <button
               type="button"
               className="navbar__language"
-              onClick={() => onLanguageChange(language === 'es' ? 'en' : 'es')}
-              aria-label={`Switch language to ${language === 'es' ? 'English' : 'Español'}`}
+              onClick={() => onLanguageChange(locale === 'es' ? 'en' : 'es')}
+              aria-label={`Switch language to ${locale === 'es' ? 'English' : 'Español'}`}
             >
               <LanguageIcon />
-              <span className="visually-hidden">{t(`language.${language}`)}</span>
+              <span className="visually-hidden">{locale.toUpperCase()}</span>
             </button>
             <a
-              className={`button button--primary navbar__cta ${activeSection === 'reserve' ? 'navbar__cta--active' : ''}`}
-              href="#reserve"
-              aria-current={activeSection === 'reserve' ? 'page' : undefined}
+              className={`button button--primary navbar__cta ${activeSection === reserveHref.split('#')[1] ? 'navbar__cta--active' : ''}`}
+              href={reserveHref}
+              aria-current={activeSection === reserveHref.split('#')[1] ? 'page' : undefined}
               onClick={(event) => {
                 event.preventDefault()
-                navigate('reserve')
+                navigate(reserveHref)
               }}
             >
-              {t('nav.reserveCta')}
+              {reserveLabel}
             </a>
           </div>
         </div>
@@ -206,42 +213,42 @@ export function Navbar({ language, onLanguageChange, activeSection, onNavigate }
       >
         <div className="navbar__drawer-head">
           <p className="navbar__drawer-eyebrow">Morpho Glamping</p>
-          <p className="navbar__drawer-title">{t('nav.menuTitle')}</p>
+          <p className="navbar__drawer-title">Menu</p>
         </div>
 
         <nav className="navbar__nav navbar__nav--drawer" aria-label="Mobile navigation">
           <a
-            href="#home"
-            className={`navbar__link navbar__link--drawer ${activeSection === 'home' ? 'navbar__link--active' : ''}`}
+            href={homeHref}
+            className={`navbar__link navbar__link--drawer ${activeSection === homeSectionId ? 'navbar__link--active' : ''}`}
             onClick={(event) => {
               event.preventDefault()
-              navigate('home')
+              navigate(homeHref)
             }}
           >
-            {t('nav.home')}
+            {homeLabel}
           </a>
-          {NAV_LINKS.map(([key, sectionId]) => renderLink(key, sectionId, 'drawer'))}
+          {links.map(({ key, label, href }) => renderLink(key, label, href, 'drawer'))}
         </nav>
 
         <div className="navbar__drawer-foot">
           <button
             type="button"
             className="navbar__language navbar__language--drawer"
-            onClick={() => onLanguageChange(language === 'es' ? 'en' : 'es')}
-            aria-label={`Switch language to ${language === 'es' ? 'English' : 'Español'}`}
+            onClick={() => onLanguageChange(locale === 'es' ? 'en' : 'es')}
+            aria-label={`Switch language to ${locale === 'es' ? 'English' : 'Español'}`}
           >
             <LanguageIcon />
-            <span className="visually-hidden">{t(`language.${language}`)}</span>
+            <span className="visually-hidden">{locale.toUpperCase()}</span>
           </button>
           <a
             className="button button--primary navbar__cta navbar__cta--drawer"
-            href="#reserve"
+            href={reserveHref}
             onClick={(event) => {
               event.preventDefault()
-              navigate('reserve')
+              navigate(reserveHref)
             }}
           >
-            {t('nav.reserveCta')}
+            {reserveLabel}
           </a>
         </div>
       </aside>
