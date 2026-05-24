@@ -1,0 +1,11 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#F5F1EA"/>
+  <rect x="48" y="48" width="1104" height="534" rx="36" fill="#EAE4DA"/>
+  <circle cx="950" cy="190" r="128" fill="#245D66" fill-opacity="0.13"/>
+  <circle cx="950" cy="190" r="72" fill="#245D66"/>
+  <path d="M800 340C852 286 926 262 1004 272C1044 277 1080 291 1110 312V420H800V340Z" fill="#D6CEC2"/>
+  <path d="M74 460C220 382 366 344 520 348C628 351 720 370 794 406" stroke="#245D66" stroke-width="3" stroke-linecap="round"/>
+  <text x="74" y="146" fill="#111111" font-family="Inter Tight, Inter, Arial, sans-serif" font-size="72" font-weight="700" letter-spacing="-0.04em">Morpho Glamping</text>
+  <text x="74" y="226" fill="#5F5B55" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="400" letter-spacing="0.02em">Luxury without noise on Lago Arenal.</text>
+  <text x="74" y="492" fill="#245D66" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600" letter-spacing="0.28em">NUEVO ARENAL, COSTA RICA</text>
+</svg>

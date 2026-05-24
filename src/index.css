@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter+Tight:wght@500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-background: #f5f1ea;
+  --color-surface: #eae4da;
+  --color-stone: #d6cec2;
+  --color-text: #111111;
+  --color-text-soft: #5f5b55;
+  --color-accent: #245d66;
+  --color-accent-soft: #7a9ba1;
+  --color-volcanic: #2e2e2e;
+  --color-white: #ffffff;
+  --color-border: rgba(0, 0, 0, 0.08);
+  --font-heading: 'Inter Tight', 'Inter', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --nav-height: 5.5rem;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --page-width: 1440px;
+  --radius-xl: 1.1rem;
+  --radius-xxl: 1.6rem;
+  color-scheme: light;
+  font-family: var(--font-body);
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--color-text);
+  background:
+    radial-gradient(circle at top, rgba(122, 155, 161, 0.13), transparent 30%),
+    radial-gradient(circle at 20% 10%, rgba(255, 255, 255, 0.72), transparent 28%),
+    linear-gradient(180deg, var(--color-background), #efe8de 55%, #f3ede5);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: auto;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  scroll-padding-top: calc(var(--nav-height) + 0.75rem);
+  -webkit-text-size-adjust: 100%;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+body {
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  min-height: -webkit-fill-available;
+  background: transparent;
+  overflow-x: clip;
+  overscroll-behavior-x: none;
+}
+
+body,
+button,
+input,
+textarea,
+select {
+  font-family: var(--font-body);
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+}
+
+#root {
+  width: 100%;
+  max-width: 100%;
+  min-height: 100vh;
+}
+
+::selection {
+  color: var(--color-white);
+  background: var(--color-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
