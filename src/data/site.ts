@@ -26,7 +26,7 @@ export const galleryImages = [
     alt: 'Horizonte del Lago Arenal al amanecer',
   },
   {
-    src: '/images/Glamping04.png',
+    src: '/images/Glamping04.jpeg',
     alt: 'Terraza privada con vista al cielo',
   },
   {
@@ -50,7 +50,7 @@ export const galleryImages = [
     alt: 'Vista complementaria del espacio exterior',
   },
   {
-    src: '/images/Glamping10.jpeg',
+    src: '/images/Glamping10.png',
     alt: 'Detalle visual de la estancia y su atmósfera',
   },
   {
