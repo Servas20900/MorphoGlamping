@@ -14,16 +14,6 @@ Premium editorial landing page concept for Morpho Glamping in Nuevo Arenal, Cost
 - i18next
 - React Calendar
 
-## Architecture
-
-- `src/App.tsx` owns the landing page composition and section flow.
-- `src/components/` contains reusable presentation pieces such as the navbar, cursor, reveal wrapper and calendar.
-- `src/i18n.ts` defines the ES/EN copy system.
-- `src/data/site.ts` centralizes gallery assets, metrics and booking states.
-- `src/App.css` and `src/index.css` define the visual system, tokens and responsive layout.
-- `public/og-image.svg` and `public/favicon.svg` provide lightweight social and brand assets.
-- `src/config/siteConfig.ts` centralizes contact and booking links that come from environment variables.
-
 ## Run
 
 ```bash
