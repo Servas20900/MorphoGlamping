@@ -1,12 +1,12 @@
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { getPreferredLocale } from '../config/routes'
+import { DEFAULT_LOCALE } from '../config/routes'
 
 export function NotFoundPage() {
   const { t, i18n } = useTranslation()
   const navigate = useNavigate()
-  const locale = getPreferredLocale(i18n.language ?? (typeof window !== 'undefined' ? window.navigator.language : 'es'))
+  const locale = i18n.language?.toLowerCase().startsWith('en') ? 'en' : DEFAULT_LOCALE
 
   useEffect(() => {
     document.documentElement.lang = locale

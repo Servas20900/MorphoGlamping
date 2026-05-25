@@ -3,7 +3,7 @@ import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
 import './App.css'
 import './i18n'
 import { RouteTracker } from './components/RouteTracker'
-import { DEFAULT_LOCALE, getPreferredLocale } from './config/routes'
+import { DEFAULT_LOCALE } from './config/routes'
 import { LandingPage } from './pages/LandingPage'
 import { NotFoundPage } from './pages/NotFoundPage'
 
@@ -11,8 +11,7 @@ function RootRedirect() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    const preferredLocale = getPreferredLocale(window.navigator.language)
-    navigate(`/${preferredLocale}`, { replace: true })
+    navigate(`/${DEFAULT_LOCALE}`, { replace: true })
   }, [navigate])
 
   return null
