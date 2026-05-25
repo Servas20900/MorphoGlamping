@@ -105,7 +105,17 @@ function setHeadElement(selector: string, attribute: 'content' | 'href', value: 
     element = selector.startsWith('link') ? (document.createElement('link') as HTMLLinkElement) : (document.createElement('meta') as HTMLMetaElement)
 
     if (selector.startsWith('link')) {
-      element.setAttribute('rel', 'canonical')
+      const relMatch = selector.match(/rel=["']([^"']+)["']/)
+      const hreflangMatch = selector.match(/hreflang=["']([^"']+)["']/)
+
+      if (relMatch) {
+        element.setAttribute('rel', relMatch[1])
+      }
+
+      if (hreflangMatch) {
+        element.setAttribute('hreflang', hreflangMatch[1])
+      }
+
       document.head.appendChild(element)
     } else if (selector.includes('name=')) {
       const nameMatch = selector.match(/name=["']([^"']+)["']/)
@@ -123,6 +133,19 @@ function setHeadElement(selector: string, attribute: 'content' | 'href', value: 
   }
 
   element.setAttribute(attribute, value)
+}
+
+function setStructuredData(selector: string, value: unknown) {
+  let element = document.head.querySelector(selector) as HTMLScriptElement | null
+
+  if (!element) {
+    element = document.createElement('script')
+    element.type = 'application/ld+json'
+    element.setAttribute('id', 'morpho-seo-schema')
+    document.head.appendChild(element)
+  }
+
+  element.textContent = JSON.stringify(value)
 }
 
 export function LandingPage({ locale }: LandingPageProps) {
@@ -167,6 +190,71 @@ export function LandingPage({ locale }: LandingPageProps) {
   const faqItems = t('faq.items', { returnObjects: true }) as Array<{ question: string; answer: string }>
   const reservationEmailHref = buildReservationEmailHref(t('reserve.emailSubject'))
   const googleMapsEmbedUrl = buildGoogleMapsEmbedUrl(siteConfig.booking.googleMapsUrl)
+  const absoluteSiteUrl = 'https://morphoglamping.com'
+  const localeUrl = `${absoluteSiteUrl}/${locale}`
+  const ogLocale = locale === 'es' ? 'es_CR' : 'en_US'
+  const faqSchema = faqItems.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer,
+    },
+  }))
+  const schema = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'LodgingBusiness',
+        '@id': `${absoluteSiteUrl}/#business`,
+        name: 'Morpho Glamping',
+        url: localeUrl,
+        image: `${absoluteSiteUrl}/images/FotoPrincipal.jpeg`,
+        description: t('seo.description'),
+        priceRange: '$80 USD+',
+        petsAllowed: true,
+        starRating: {
+          '@type': 'Rating',
+          ratingValue: '4.58',
+          bestRating: '5',
+        },
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: '4.58',
+          reviewCount: '43',
+          bestRating: '5',
+        },
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'Nuevo Arenal',
+          addressRegion: 'Guanacaste',
+          addressCountry: 'CR',
+        },
+        areaServed: [
+          'Nuevo Arenal',
+          'Lago Arenal',
+          'La Fortuna',
+          'Arenal Guanacaste',
+        ],
+        amenityFeature: [
+          { '@type': 'LocationFeatureSpecification', name: 'Air conditioning', value: true },
+          { '@type': 'LocationFeatureSpecification', name: 'WiFi', value: true },
+          { '@type': 'LocationFeatureSpecification', name: 'Private bathroom', value: true },
+          { '@type': 'LocationFeatureSpecification', name: 'Private parking', value: true },
+          { '@type': 'LocationFeatureSpecification', name: 'Pets allowed', value: true },
+        ],
+        sameAs: [
+          'https://www.instagram.com/morphoglampingcr/',
+          'https://es-l.airbnb.com/rooms/1299488275343790947',
+        ],
+      },
+      {
+        '@type': 'FAQPage',
+        '@id': `${absoluteSiteUrl}/#faq`,
+        mainEntity: faqSchema,
+      },
+    ],
+  }
 
   const navLinks = [
     { key: 'stay' as SectionKey, label: t('nav.stay'), href: getLocalizedPath(locale, 'stay') },
@@ -197,15 +285,29 @@ export function LandingPage({ locale }: LandingPageProps) {
     const description = t('seo.description')
     const ogTitle = t('seo.ogTitle')
     const ogDescription = t('seo.ogDescription')
-    const canonicalUrl = `${window.location.origin}${location.pathname}`
-    const ogUrl = `${window.location.origin}${location.pathname}${location.hash}`
+    const canonicalUrl = `${absoluteSiteUrl}${location.pathname}`
+    const ogUrl = `${absoluteSiteUrl}${location.pathname}${location.hash}`
 
     document.title = title
     setHeadElement('meta[name="description"]', 'content', description)
+    setHeadElement('meta[name="keywords"]', 'content', 'glamping Costa Rica, Lago Arenal, Nuevo Arenal, Arenal Guanacaste, domo para parejas, vista al lago')
+    setHeadElement('meta[name="robots"]', 'content', 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1')
+    setHeadElement('meta[property="og:site_name"]', 'content', 'Morpho Glamping')
+    setHeadElement('meta[property="og:locale"]', 'content', ogLocale)
+    setHeadElement('meta[property="og:type"]', 'content', 'website')
+    setHeadElement('meta[property="og:image"]', 'content', `${absoluteSiteUrl}/og-image.svg`)
     setHeadElement('meta[property="og:title"]', 'content', ogTitle)
     setHeadElement('meta[property="og:description"]', 'content', ogDescription)
     setHeadElement('meta[property="og:url"]', 'content', ogUrl)
+    setHeadElement('meta[name="twitter:card"]', 'content', 'summary_large_image')
+    setHeadElement('meta[name="twitter:title"]', 'content', ogTitle)
+    setHeadElement('meta[name="twitter:description"]', 'content', ogDescription)
+    setHeadElement('meta[name="twitter:image"]', 'content', `${absoluteSiteUrl}/og-image.svg`)
     setHeadElement('link[rel="canonical"]', 'href', canonicalUrl)
+    setHeadElement('link[rel="alternate"][hreflang="es"]', 'href', `${absoluteSiteUrl}/es`)
+    setHeadElement('link[rel="alternate"][hreflang="en"]', 'href', `${absoluteSiteUrl}/en`)
+    setHeadElement('link[rel="alternate"][hreflang="x-default"]', 'href', `${absoluteSiteUrl}/es`)
+    setStructuredData('script#morpho-seo-schema', schema)
   }, [i18n.language, locale, location.hash, location.pathname, t])
 
   useEffect(() => {
@@ -326,7 +428,7 @@ export function LandingPage({ locale }: LandingPageProps) {
                 <div className="hero-panel hero-panel--image">
                   <img
                     src={heroImage}
-                    alt="Interior cálido del domo con vista al agua"
+                    alt="Exterior del domo glamping Morpho Glamping en Nuevo Arenal, Costa Rica"
                     className="hero-image"
                     fetchPriority="high"
                     loading="eager"

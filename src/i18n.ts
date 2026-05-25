@@ -23,9 +23,9 @@ const resources = {
       },
       hero: {
         eyebrow: 'Nuevo Arenal · Costa Rica',
-        title: 'A quieter way to experience Costa Rica',
+        title: 'Glamping Costa Rica en Lago Arenal para parejas',
         body:
-          'Morpho Glamping is a private dome designed for couples who want to disconnect between the lake, the mist and the landscape without giving up comfort.',
+          'Morpho Glamping is a private dome designed for couples who want to disconnect between Lago Arenal, Nuevo Arenal and the volcanic route without giving up comfort. Enjoy a terrace with views to the lake, AC, WiFi, private bathroom and a calm, romantic stay in Costa Rica.',
         primary: 'Reserve Stay',
         secondary: 'Explore Experience',
         captionTop: 'Lakefront calm / morning light',
@@ -43,7 +43,7 @@ const resources = {
       stay: {
         title: 'The Stay',
         body:
-          'A compact, private retreat built for couples: calm, tactile and practical, with the essentials already considered.',
+          'A compact, private retreat built for couples in Nuevo Arenal: calm, tactile and practical, with the essentials already considered for a glamping Costa Rica escape.',
         points: [
           'Private dome for 2 guests',
           'King bed and private bathroom with hot water',
@@ -83,7 +83,7 @@ const resources = {
       experience: {
         title: 'The Experience',
         body:
-          'The stay is designed around the real rhythm of Nuevo Arenal: the lake, local restaurants, nearby tours and unhurried time together.',
+          'The stay is designed around the real rhythm of Nuevo Arenal and Lago Arenal: the lake, local restaurants, nearby tours and unhurried time together.',
         cards: [
           {
             title: 'Lago Arenal',
@@ -102,7 +102,7 @@ const resources = {
       gallery: {
         title: 'The Space',
         body:
-          'A tighter, more architectural selection of the dome, the terrace and the surrounding atmosphere.',
+          'A tighter, more architectural selection of the dome, the terrace and the surrounding atmosphere in Arenal, Guanacaste.',
       },
       rates: {
         title: 'Rates',
@@ -129,11 +129,11 @@ const resources = {
       location: {
         title: 'Location',
         body:
-          'Morpho Glamping sits close to the lake and close to the town, with just enough distance to feel quiet and private.',
+          'Morpho Glamping sits in Nuevo Arenal, Guanacaste, close to Lago Arenal and the town center, with just enough distance to feel quiet, private and easy to reach from La Fortuna.',
         points: [
-          '~600–750 m from Lake Arenal',
+          '~600–750 m from Lago Arenal',
           '~250 m from Nuevo Arenal town center',
-          'Restaurants ~20 m away',
+          'Restaurants nearby',
           'Private parking included',
           'Independent entrance',
         ],
@@ -222,7 +222,7 @@ const resources = {
       reserve: {
         title: 'Reserve the quiet',
         body:
-          'Use the calendar, then continue through WhatsApp or Airbnb. We keep the booking path simple and human.',
+          'Use the calendar, then continue through WhatsApp or Airbnb. We keep the booking path simple and human for guests searching glamping in Arenal and Lago Arenal.',
         points: ['WhatsApp booking', 'Airbnb support', 'iCal sync'],
         cta: 'Request reservation',
         whatsappCta: 'Reserve by WhatsApp',
@@ -234,10 +234,12 @@ const resources = {
         copy: 'Editorial landing page concept for Morpho Glamping in Nuevo Arenal, Costa Rica.',
       },
       seo: {
-        title: 'Morpho Glamping | Luxury without noise on Lago Arenal',
-        description: 'Private glamping retreat for couples in Nuevo Arenal, Costa Rica.',
-        ogTitle: 'Morpho Glamping | Luxury without noise on Lago Arenal',
-        ogDescription: 'Private glamping retreat for couples in Nuevo Arenal, Costa Rica.',
+        title: 'Glamping Costa Rica en Lago Arenal | Morpho Glamping',
+        description:
+          'Domo para parejas en Nuevo Arenal, Guanacaste. Vistas al Lago Arenal, AC, WiFi, baño privado y terraza privada. Reserva directo.',
+        ogTitle: 'Glamping Costa Rica en Lago Arenal | Morpho Glamping',
+        ogDescription:
+          'Domo para parejas en Nuevo Arenal, Guanacaste. Vistas al Lago Arenal, AC, WiFi, baño privado y terraza privada. Reserva directo.',
       },
       notFound: {
         title: 'Page not found',
@@ -274,9 +276,9 @@ const resources = {
       },
       hero: {
         eyebrow: 'Nuevo Arenal · Costa Rica',
-        title: 'Una forma más tranquila de vivir Costa Rica',
+        title: 'Glamping Costa Rica en Lago Arenal para parejas',
         body:
-          'Morpho Glamping es un domo privado diseñado para parejas que quieren desconectarse entre lago, neblina y paisaje sin renunciar al confort.',
+          'Morpho Glamping es un domo privado para parejas en Nuevo Arenal, pensado para desconectarse entre el Lago Arenal, la neblina y el paisaje sin renunciar al confort. Con terraza privada, vistas al lago, AC, WiFi y baño privado, es una escapada romántica auténtica en Costa Rica.',
         primary: 'Reservar estancia',
         secondary: 'Explorar experiencia',
         captionTop: 'Calma frente al lago / luz de la mañana',
@@ -294,7 +296,7 @@ const resources = {
       stay: {
         title: 'La estancia',
         body:
-          'Un refugio compacto y privado para parejas: sereno, táctil y práctico, con lo esencial resuelto desde el inicio.',
+          'Un refugio compacto y privado para parejas en Nuevo Arenal: sereno, táctil y práctico, con lo esencial resuelto desde el inicio para una experiencia de glamping Costa Rica.',
         points: [
           'Domo privado para 2 personas',
           'Cama matrimonial y baño privado con agua caliente',
@@ -334,7 +336,7 @@ const resources = {
       experience: {
         title: 'La experiencia',
         body:
-          'La estadía está pensada alrededor del ritmo real de Nuevo Arenal: el lago, los restaurantes cercanos, los tours y el tiempo compartido.',
+          'La estadía está pensada alrededor del ritmo real de Nuevo Arenal y del Lago Arenal: el lago, los restaurantes cercanos, los tours y el tiempo compartido.',
         cards: [
           {
             title: 'Lago Arenal',
@@ -353,7 +355,7 @@ const resources = {
       gallery: {
         title: 'El espacio',
         body:
-          'Una selección más arquitectónica del domo, la terraza y la atmósfera que lo rodea.',
+          'Una selección más arquitectónica del domo, la terraza y la atmósfera que lo rodea en Arenal, Guanacaste.',
       },
       rates: {
         title: 'Tarifas',
@@ -380,11 +382,11 @@ const resources = {
       location: {
         title: 'Ubicación',
         body:
-          'Morpho Glamping está cerca del lago y cerca del pueblo, con la distancia justa para sentirse silencioso y privado.',
+          'Morpho Glamping está en Nuevo Arenal, Guanacaste, muy cerca del Lago Arenal y del centro del pueblo, con la distancia justa para sentirse silencioso, privado y bien conectado con La Fortuna.',
         points: [
           '~600–750 m del Lago Arenal',
           '~250 m del centro de Nuevo Arenal',
-          'Restaurantes a ~20 m',
+          'Restaurantes cercanos',
           'Parqueo privado incluido',
           'Entrada independiente',
         ],
@@ -476,7 +478,7 @@ const resources = {
       reserve: {
         title: 'Reservá el silencio',
         body:
-          'Usá el calendario y continuá por WhatsApp o Airbnb. Mantenemos el camino de reserva simple y humano.',
+          'Usá el calendario y continuá por WhatsApp o Airbnb. Mantenemos el camino de reserva simple y humano para quienes buscan glamping en Arenal y Lago Arenal.',
         points: ['Reserva por WhatsApp', 'Soporte Airbnb', 'Sincronización iCal'],
         cta: 'Solicitar reserva',
         whatsappCta: 'Reservar por WhatsApp',
@@ -488,10 +490,12 @@ const resources = {
         copy: 'Concepto de landing editorial para Morpho Glamping en Nuevo Arenal, Costa Rica.',
       },
       seo: {
-        title: 'Morpho Glamping | Glamping de lujo sobre el Lago Arenal',
-        description: 'Refugio privado de glamping para parejas en Nuevo Arenal, Costa Rica.',
-        ogTitle: 'Morpho Glamping | Glamping de lujo sobre el Lago Arenal',
-        ogDescription: 'Refugio privado de glamping para parejas en Nuevo Arenal, Costa Rica.',
+        title: 'Glamping Costa Rica en Lago Arenal | Morpho Glamping',
+        description:
+          'Domo para parejas en Nuevo Arenal, Guanacaste. Vistas al Lago Arenal, AC, WiFi, baño privado y terraza privada. Reservá directo.',
+        ogTitle: 'Glamping Costa Rica en Lago Arenal | Morpho Glamping',
+        ogDescription:
+          'Domo para parejas en Nuevo Arenal, Guanacaste. Vistas al Lago Arenal, AC, WiFi, baño privado y terraza privada. Reservá directo.',
       },
       notFound: {
         title: 'Página no encontrada',

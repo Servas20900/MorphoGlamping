@@ -15,47 +15,47 @@ export const heroHighlights = [
 export const galleryImages = [
   {
     src: '/images/Glamping01.jpeg',
-    alt: 'Vista general del espacio de glamping',
+    alt: 'Exterior del domo glamping Morpho Glamping en Nuevo Arenal, Guanacaste',
   },
   {
     src: '/images/Glamping02.png',
-    alt: 'Interior del domo con madera cálida y luz del lago',
+    alt: 'Interior del domo glamping para parejas con cama matrimonial y luz natural',
   },
   {
     src: '/images/Glamping03.jpeg',
-    alt: 'Horizonte del Lago Arenal al amanecer',
+    alt: 'Vista al Lago Arenal desde el glamping al amanecer',
   },
   {
     src: '/images/Glamping04.jpeg',
-    alt: 'Terraza privada con vista al cielo',
+    alt: 'Terraza privada con vistas al Lago Arenal en Nuevo Arenal',
   },
   {
     src: '/images/Glamping05.jpeg',
-    alt: 'Espacio de comedor minimalista',
+    alt: 'Mini cocina equipada del glamping con café y vajilla para parejas',
   },
   {
     src: '/images/Glamping06.png',
-    alt: 'Detalle adicional del alojamiento y su entorno',
+    alt: 'Baño privado del domo glamping con ducha caliente y diseño cómodo',
   },
   {
     src: '/images/Glamping07.jpeg',
-    alt: 'Otra vista del glamping con luz natural',
+    alt: 'Domo glamping con entrada independiente y estacionamiento privado',
   },
   {
     src: '/images/Glamping08.jpeg',
-    alt: 'Encuadre de la propiedad con ambiente cálido',
+    alt: 'Vista del alojamiento romántico en Arenal Guanacaste rodeado de naturaleza',
   },
   {
     src: '/images/Glamping09.png',
-    alt: 'Vista complementaria del espacio exterior',
+    alt: 'Área exterior pet friendly del glamping cerca del Lago Arenal',
   },
   {
     src: '/images/Glamping10.png',
-    alt: 'Detalle visual de la estancia y su atmósfera',
+    alt: 'Terraza mirador privada con vista al Lago Arenal para parejas',
   },
   {
     src: '/images/Glamping11.png',
-    alt: 'Imagen final del conjunto del glamping',
+    alt: 'Glamping en Nuevo Arenal Costa Rica con ambiente íntimo y tranquilo',
   },
 ] as const
 
