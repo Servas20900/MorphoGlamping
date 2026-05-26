@@ -113,7 +113,7 @@ const resources = {
         title: 'Availability',
         body:
           'Select a stay date, check the current state and continue through the preferred booking channel with no friction.',
-        selectedLabel: 'Selected date',
+        selectedLabel: 'Selected stay',
         available: 'Available',
         booked: 'Booked',
         selected: 'Selected',
@@ -366,7 +366,7 @@ const resources = {
         title: 'Disponibilidad',
         body:
           'Seleccioná una fecha, revisá el estado y continuá por el canal de reserva preferido sin fricción.',
-        selectedLabel: 'Fecha seleccionada',
+        selectedLabel: 'Estadía seleccionada',
         available: 'Disponible',
         booked: 'Reservado',
         selected: 'Seleccionado',

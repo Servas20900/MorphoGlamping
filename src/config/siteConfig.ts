@@ -42,9 +42,15 @@ export const siteConfig = {
     whatsappHref: buildWhatsAppHref(whatsappNumber, whatsappMessage),
   },
   booking: {
-    airbnbUrl: readEnv(env.VITE_AIRBNB_URL),
+    airbnbUrl:
+      readEnv(env.VITE_AIRBNB_URL) ||
+      'https://es-l.airbnb.com/rooms/1299488275343790947?guests=1&adults=1&s=67&unique_share_id=28aa6230-9abe-4f80-8131-51a07c3e89d9',
     airbnbIcalUrl: readEnv(env.VITE_AIRBNB_ICAL_URL),
     googleMapsUrl: readEnv(env.VITE_GOOGLE_MAPS_URL),
+  },
+  social: {
+    instagramUrl: 'https://www.instagram.com/morphoglampingcr/',
+    tiktokUrl: 'https://www.tiktok.com/@morpho.glamping',
   },
 } as const
 

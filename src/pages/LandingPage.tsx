@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAnalytics } from '../hooks/useAnalytics.js'
@@ -12,6 +12,7 @@ import { bookedDateKeys, galleryImages, heroHighlights, heroImage } from '../dat
 import { FAQAccordion } from '../components/FAQAccordion'
 import { useActiveSection } from '../hooks/useActiveSection'
 import { buildReservationEmailHref, siteConfig } from '../config/siteConfig'
+import { parseBookedDateKeysFromIcalFeed } from '../services/availabilityFeed'
 import {
   type Locale,
   type SectionKey,
@@ -32,30 +33,6 @@ type LandingPageProps = {
 }
 
 const COOKIE_CONSENT_KEY = 'morpho_cookie_consent'
-
-function startOfDay(date: Date) {
-  const next = new Date(date)
-  next.setHours(0, 0, 0, 0)
-  return next
-}
-
-function dateKey(date: Date) {
-  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
-}
-
-function getFirstAvailableDate(fromDate = new Date()) {
-  const candidate = startOfDay(fromDate)
-
-  for (let index = 0; index < 90; index += 1) {
-    if (!bookedDateKeys.has(dateKey(candidate))) {
-      return new Date(candidate)
-    }
-
-    candidate.setDate(candidate.getDate() + 1)
-  }
-
-  return new Date(candidate)
-}
 
 function buildGoogleMapsEmbedUrl(sourceUrl: string) {
   if (!sourceUrl) {
@@ -155,7 +132,7 @@ export function LandingPage({ locale }: LandingPageProps) {
   const { trackEvent } = useAnalytics()
   useScrollToHash()
 
-  const [selectedDate, setSelectedDate] = useState<Date>(() => getFirstAvailableDate())
+  const [availableDateKeys, setAvailableDateKeys] = useState<Set<string>>(() => new Set(bookedDateKeys))
   const [consent, setConsent] = useState<string | null>(() => readCookieConsent())
 
   const sectionIds = SECTION_IDS[locale]
@@ -170,18 +147,6 @@ export function LandingPage({ locale }: LandingPageProps) {
     sectionIds.faq,
     sectionIds.reserve,
   ] as const
-
-  const selectedDateLabel = useMemo(
-    () =>
-      new Intl.DateTimeFormat(locale === 'es' ? 'es-CR' : 'en-US', {
-        day: '2-digit',
-        month: 'long',
-        year: 'numeric',
-      }).format(selectedDate),
-    [locale, selectedDate],
-  )
-
-  const booked = bookedDateKeys.has(dateKey(selectedDate))
 
   const stayPoints = t('stay.points', { returnObjects: true }) as string[]
   const stayFacts = t('stay.facts', { returnObjects: true }) as string[]
@@ -244,8 +209,9 @@ export function LandingPage({ locale }: LandingPageProps) {
           { '@type': 'LocationFeatureSpecification', name: 'Pets allowed', value: true },
         ],
         sameAs: [
-          'https://www.instagram.com/morphoglampingcr/',
-          'https://es-l.airbnb.com/rooms/1299488275343790947',
+          siteConfig.social.instagramUrl,
+          siteConfig.social.tiktokUrl,
+          siteConfig.booking.airbnbUrl,
         ],
       },
       {
@@ -311,6 +277,45 @@ export function LandingPage({ locale }: LandingPageProps) {
   }, [i18n.language, locale, location.hash, location.pathname, t])
 
   useEffect(() => {
+    const feedUrl = '/.netlify/functions/ical-proxy'
+
+    if (!feedUrl) {
+      return
+    }
+
+    const abortController = new AbortController()
+    let cancelled = false
+
+    async function loadAvailability() {
+      try {
+        const response = await fetch(feedUrl, { signal: abortController.signal, cache: 'no-store' })
+
+        if (!response.ok) {
+          throw new Error(`Availability feed request failed with status ${response.status}`)
+        }
+
+        const feed = await response.text()
+        const feedBookedDateKeys = parseBookedDateKeysFromIcalFeed(feed)
+
+        if (!cancelled) {
+          setAvailableDateKeys(new Set([...bookedDateKeys, ...feedBookedDateKeys]))
+        }
+      } catch (error) {
+        if (!cancelled) {
+          console.warn('Unable to load booking feed', error)
+        }
+      }
+    }
+
+    void loadAvailability()
+
+    return () => {
+      cancelled = true
+      abortController.abort()
+    }
+  }, [])
+
+  useEffect(() => {
     if (consent === 'accepted') {
       initGA()
     }
@@ -361,9 +366,8 @@ export function LandingPage({ locale }: LandingPageProps) {
     trackEvent('conversion', 'click_phone')
   }
 
-  const handleDateSelection = (date: Date) => {
-    setSelectedDate(date)
-    trackEvent('engagement', 'date_selected', date.toISOString().slice(0, 10))
+  const handleRangeSelected = (startDate: Date, endDate: Date) => {
+    trackEvent('engagement', 'date_range_selected', `${startDate.toISOString().slice(0, 10)}_${endDate.toISOString().slice(0, 10)}`)
   }
 
   const handleSectionJump = (sectionKey: SectionKey) => {
@@ -572,38 +576,12 @@ export function LandingPage({ locale }: LandingPageProps) {
               <div className="availability-panel">
                 <Suspense fallback={<div className="availability-calendar__fallback">Loading calendar...</div>}>
                   <AvailabilityCalendar
-                    locale={locale}
-                    selectedDate={selectedDate}
-                    bookedDateKeys={bookedDateKeys}
-                    onSelectDate={handleDateSelection}
+                    bookedDateKeys={availableDateKeys}
+                    onRangeSelected={handleRangeSelected}
+                    whatsappPhone={siteConfig.contact.whatsappNumber}
                   />
                 </Suspense>
               </div>
-
-              <aside className="availability-sidebar">
-                <div className="availability-summary">
-                  <span className="availability-summary__label">{t('availability.selectedLabel')}</span>
-                  <strong>{selectedDateLabel}</strong>
-                  <p className={booked ? 'availability-summary__status--booked' : 'availability-summary__status--open'}>
-                    {booked ? t('availability.booked') : t('availability.available')}
-                  </p>
-                </div>
-
-                <ul className="status-list">
-                  <li>
-                    <span className="status-dot status-dot--available" />
-                    {t('availability.available')}
-                  </li>
-                  <li>
-                    <span className="status-dot status-dot--booked" />
-                    {t('availability.booked')}
-                  </li>
-                  <li>
-                    <span className="status-dot status-dot--selected" />
-                    {t('availability.selected')}
-                  </li>
-                </ul>
-              </aside>
             </div>
           </section>
 
@@ -701,6 +679,15 @@ export function LandingPage({ locale }: LandingPageProps) {
                 <a href={siteConfig.contact.emailHref || reserveHref}>{siteConfig.contact.email}</a>
                 <a href={siteConfig.contact.phoneHref || reserveHref} onClick={handlePhoneClick}>
                   {siteConfig.contact.phone}
+                </a>
+                <a href={siteConfig.booking.airbnbUrl} target="_blank" rel="noreferrer" onClick={handleAirbnbClick}>
+                  Airbnb
+                </a>
+                <a href={siteConfig.social.instagramUrl} target="_blank" rel="noreferrer">
+                  Instagram
+                </a>
+                <a href={siteConfig.social.tiktokUrl} target="_blank" rel="noreferrer">
+                  TikTok
                 </a>
                 <a
                   href={siteConfig.contact.whatsappHref || reserveHref}
