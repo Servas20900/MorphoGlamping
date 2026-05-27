@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAnalytics } from '../hooks/useAnalytics.js'
@@ -8,11 +8,10 @@ import { Navbar } from '../components/Navbar'
 import { SmoothScroll } from '../components/SmoothScroll'
 import { Reveal } from '../components/Reveal'
 import { GalleryCarousel } from '../components/GalleryCarousel'
-import { bookedDateKeys, galleryImages, heroHighlights, heroImage } from '../data/site'
+import { galleryImages, heroHighlights, heroImage } from '../data/site'
 import { FAQAccordion } from '../components/FAQAccordion'
 import { useActiveSection } from '../hooks/useActiveSection'
 import { buildReservationEmailHref, siteConfig } from '../config/siteConfig'
-import { parseBookedDateKeysFromIcalFeed } from '../services/availabilityFeed'
 import {
   type Locale,
   type SectionKey,
@@ -21,12 +20,6 @@ import {
   getSectionKeyFromHash,
 } from '../config/routes'
 import { CookieBanner } from '../components/CookieBanner'
-
-const AvailabilityCalendar = lazy(() =>
-  import('../components/AvailabilityCalendar').then((module) => ({
-    default: module.AvailabilityCalendar,
-  })),
-)
 
 type LandingPageProps = {
   locale: Locale
@@ -41,7 +34,12 @@ function buildGoogleMapsEmbedUrl(sourceUrl: string) {
 
   try {
     const parsedUrl = new URL(sourceUrl)
+    const searchCoordinatesMatch = parsedUrl.pathname.match(/\/maps\/search\/(-?\d+(?:\.\d+)?),\+?(-?\d+(?:\.\d+)?)/)
     const coordinatesMatch = parsedUrl.pathname.match(/@(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/)
+
+    if (searchCoordinatesMatch) {
+      return `https://www.google.com/maps?q=${searchCoordinatesMatch[1]},${searchCoordinatesMatch[2]}&z=15&output=embed`
+    }
 
     if (coordinatesMatch) {
       return `https://www.google.com/maps?q=${coordinatesMatch[1]},${coordinatesMatch[2]}&z=15&output=embed`
@@ -132,7 +130,6 @@ export function LandingPage({ locale }: LandingPageProps) {
   const { trackEvent } = useAnalytics()
   useScrollToHash()
 
-  const [availableDateKeys, setAvailableDateKeys] = useState<Set<string>>(() => new Set(bookedDateKeys))
   const [consent, setConsent] = useState<string | null>(() => readCookieConsent())
 
   const sectionIds = SECTION_IDS[locale]
@@ -153,6 +150,7 @@ export function LandingPage({ locale }: LandingPageProps) {
   const experienceCards = t('experience.cards', { returnObjects: true }) as Array<{ title: string; text: string }>
   const locationPoints = t('location.points', { returnObjects: true }) as string[]
   const faqItems = t('faq.items', { returnObjects: true }) as Array<{ question: string; answer: string }>
+  const reservePoints = t('reserve.points', { returnObjects: true }) as string[]
   const reservationEmailHref = buildReservationEmailHref(t('reserve.emailSubject'))
   const googleMapsEmbedUrl = buildGoogleMapsEmbedUrl(siteConfig.booking.googleMapsUrl)
   const absoluteSiteUrl = 'https://morphoglamping.com'
@@ -277,45 +275,6 @@ export function LandingPage({ locale }: LandingPageProps) {
   }, [i18n.language, locale, location.hash, location.pathname, t])
 
   useEffect(() => {
-    const feedUrl = '/.netlify/functions/ical-proxy'
-
-    if (!feedUrl) {
-      return
-    }
-
-    const abortController = new AbortController()
-    let cancelled = false
-
-    async function loadAvailability() {
-      try {
-        const response = await fetch(feedUrl, { signal: abortController.signal, cache: 'no-store' })
-
-        if (!response.ok) {
-          throw new Error(`Availability feed request failed with status ${response.status}`)
-        }
-
-        const feed = await response.text()
-        const feedBookedDateKeys = parseBookedDateKeysFromIcalFeed(feed)
-
-        if (!cancelled) {
-          setAvailableDateKeys(new Set([...bookedDateKeys, ...feedBookedDateKeys]))
-        }
-      } catch (error) {
-        if (!cancelled) {
-          console.warn('Unable to load booking feed', error)
-        }
-      }
-    }
-
-    void loadAvailability()
-
-    return () => {
-      cancelled = true
-      abortController.abort()
-    }
-  }, [])
-
-  useEffect(() => {
     if (consent === 'accepted') {
       initGA()
     }
@@ -364,10 +323,6 @@ export function LandingPage({ locale }: LandingPageProps) {
 
   const handlePhoneClick = () => {
     trackEvent('conversion', 'click_phone')
-  }
-
-  const handleRangeSelected = (startDate: Date, endDate: Date) => {
-    trackEvent('engagement', 'date_range_selected', `${startDate.toISOString().slice(0, 10)}_${endDate.toISOString().slice(0, 10)}`)
   }
 
   const handleSectionJump = (sectionKey: SectionKey) => {
@@ -519,15 +474,6 @@ export function LandingPage({ locale }: LandingPageProps) {
               <ul className="availability-channels">
                 <li>
                   <a
-                    href={siteConfig.booking.airbnbIcalUrl || '#'}
-                    target={siteConfig.booking.airbnbIcalUrl ? '_blank' : undefined}
-                    rel={siteConfig.booking.airbnbIcalUrl ? 'noreferrer' : undefined}
-                  >
-                    {t('availability.iCal')}
-                  </a>
-                </li>
-                <li>
-                  <a
                     href={siteConfig.contact.whatsappHref || getLocalizedPath(locale, 'availability')}
                     target={siteConfig.contact.whatsappHref ? '_blank' : undefined}
                     rel={siteConfig.contact.whatsappHref ? 'noreferrer' : undefined}
@@ -572,16 +518,52 @@ export function LandingPage({ locale }: LandingPageProps) {
               <p className="section-lead">{t('availability.body')}</p>
             </Reveal>
 
-            <div className="availability-layout">
-              <div className="availability-panel">
-                <Suspense fallback={<div className="availability-calendar__fallback">Loading calendar...</div>}>
-                  <AvailabilityCalendar
-                    bookedDateKeys={availableDateKeys}
-                    onRangeSelected={handleRangeSelected}
-                    whatsappPhone={siteConfig.contact.whatsappNumber}
-                  />
-                </Suspense>
+            <div className="availability-panel availability-panel--simple">
+              <div className="availability-summary">
+                <span className="availability-summary__label">{t('availability.selectedLabel')}</span>
+                <strong>{t('availability.rateValue')}</strong>
+                <p>{t('availability.rateNote')}</p>
+                <p className="availability-summary__status--open">{t('availability.available')}</p>
               </div>
+
+              <ul className="availability-channels">
+                <li>
+                  <a
+                    href={siteConfig.contact.whatsappHref || getLocalizedPath(locale, 'availability')}
+                    target={siteConfig.contact.whatsappHref ? '_blank' : undefined}
+                    rel={siteConfig.contact.whatsappHref ? 'noreferrer' : undefined}
+                    onClick={(event) => {
+                      if (!siteConfig.contact.whatsappHref) {
+                        event.preventDefault()
+                        handleSectionJump('availability')
+                        return
+                      }
+
+                      handleAvailabilityWhatsAppClick()
+                    }}
+                  >
+                    {t('availability.whatsapp')}
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={siteConfig.booking.airbnbUrl || getLocalizedPath(locale, 'availability')}
+                    target={siteConfig.booking.airbnbUrl ? '_blank' : undefined}
+                    rel={siteConfig.booking.airbnbUrl ? 'noreferrer' : undefined}
+                    onClick={(event) => {
+                      if (!siteConfig.booking.airbnbUrl) {
+                        event.preventDefault()
+                        handleSectionJump('availability')
+                        return
+                      }
+
+                      handleAirbnbClick()
+                    }}
+                  >
+                    {t('availability.airbnb')}
+                  </a>
+                </li>
+              </ul>
             </div>
           </section>
 
@@ -634,6 +616,12 @@ export function LandingPage({ locale }: LandingPageProps) {
             <Reveal className="reserve-block">
               <h2 className="section-title">{t('reserve.title')}</h2>
               <p className="section-lead">{t('reserve.body')}</p>
+
+              <ul className="reserve-points" aria-label={t('reserve.title')}>
+                {reservePoints.map((point) => (
+                  <li key={point}>{point}</li>
+                ))}
+              </ul>
 
               <div className="reserve-actions">
                 <a className="button button--primary" href={reservationEmailHref || reserveHref}>

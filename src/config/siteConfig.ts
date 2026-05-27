@@ -1,9 +1,3 @@
-const env = import.meta.env
-
-function readEnv(value: string | undefined, fallback = '') {
-  return value?.trim() || fallback
-}
-
 function toDialableNumber(value: string) {
   return value.replace(/[^0-9]/g, '')
 }
@@ -26,10 +20,12 @@ function buildWhatsAppHref(number: string, message: string) {
   return `https://wa.me/${dialableNumber}?text=${encodeURIComponent(message)}`
 }
 
-const businessEmail = readEnv(env.VITE_BUSINESS_EMAIL)
-const businessPhone = readEnv(env.VITE_BUSINESS_PHONE)
-const whatsappNumber = readEnv(env.VITE_WHATSAPP_NUMBER)
-const whatsappMessage = readEnv(env.VITE_WHATSAPP_MESSAGE)
+const businessEmail = 'morphoglamping@gmail.com'
+const businessPhone = '+506 7071-1103'
+const whatsappNumber = '+506 7071-1103'
+const whatsappMessage = 'Hola, me interesa reservar una estadía en Morpho Glamping, del ______ al ______ .'
+const airbnbUrl = 'https://es-l.airbnb.com/rooms/1299488275343790947?guests=1&adults=1&s=67&unique_share_id=397abca1-d149-46e1-9d1b-aa591d423c2c'
+const googleMapsUrl = 'https://www.google.com/maps/@10.5438422,-84.8927285,61m/data=!3m1!1e3?entry=ttu&g_ep=EgoyMDI2MDUyMC4wIKXMDSoASAFQAw%3D%3D'
 
 export const siteConfig = {
   contact: {
@@ -42,11 +38,8 @@ export const siteConfig = {
     whatsappHref: buildWhatsAppHref(whatsappNumber, whatsappMessage),
   },
   booking: {
-    airbnbUrl:
-      readEnv(env.VITE_AIRBNB_URL) ||
-      'https://es-l.airbnb.com/rooms/1299488275343790947?guests=1&adults=1&s=67&unique_share_id=28aa6230-9abe-4f80-8131-51a07c3e89d9',
-    airbnbIcalUrl: readEnv(env.VITE_AIRBNB_ICAL_URL),
-    googleMapsUrl: readEnv(env.VITE_GOOGLE_MAPS_URL),
+    airbnbUrl,
+    googleMapsUrl,
   },
   social: {
     instagramUrl: 'https://www.instagram.com/morphoglampingcr/',

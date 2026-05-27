@@ -61,14 +61,3 @@ export const galleryImages = [
 
 /** Imagen principal del hero */
 export const heroImage = '/images/FotoPrincipal.jpeg'
-
-export const bookedDateKeys = new Set([
-  '2026-05-28',
-  '2026-05-29',
-  '2026-06-03',
-  '2026-06-04',
-  '2026-06-11',
-  '2026-06-12',
-  '2026-06-18',
-  '2026-06-19',
-])
