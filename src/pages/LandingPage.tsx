@@ -27,23 +27,6 @@ type LandingPageProps = {
 
 const COOKIE_CONSENT_KEY = 'morpho_cookie_consent'
 
-function buildGoogleMapsEmbedUrl(sourceUrl: string) {
-  if (!sourceUrl) return ''
-
-  try {
-    const parsedUrl = new URL(sourceUrl)
-    const searchCoordinatesMatch = parsedUrl.pathname.match(/\/maps\/search\/(-?\d+(?:\.\d+)?),\+?(-?\d+(?:\.\d+)?)/)
-    const coordinatesMatch = parsedUrl.pathname.match(/@(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/)
-
-    if (searchCoordinatesMatch) return `https://www.google.com/maps?q=${searchCoordinatesMatch[1]},${searchCoordinatesMatch[2]}&z=15&output=embed`
-    if (coordinatesMatch) return `https://www.google.com/maps?q=${coordinatesMatch[1]},${coordinatesMatch[2]}&z=15&output=embed`
-    if (parsedUrl.searchParams.get('q')) return `https://www.google.com/maps?output=embed&q=${encodeURIComponent(parsedUrl.searchParams.get('q') ?? '')}`
-    if (sourceUrl.includes('output=embed')) return sourceUrl
-    return `${sourceUrl}${sourceUrl.includes('?') ? '&' : '?'}output=embed`
-  } catch {
-    return sourceUrl
-  }
-}
 
 function readCookieConsent() {
   if (typeof window === 'undefined') return null
@@ -132,7 +115,7 @@ export function LandingPage({ locale }: LandingPageProps) {
   const locationPoints = t('location.points', { returnObjects: true }) as string[]
   const faqItems = t('faq.items', { returnObjects: true }) as Array<{ question: string; answer: string }>
   const reservationEmailHref = buildReservationEmailHref(t('reserve.emailSubject'))
-  const googleMapsEmbedUrl = buildGoogleMapsEmbedUrl(siteConfig.booking.googleMapsUrl)
+  const googleMapsEmbedUrl = siteConfig.booking.googleMapsEmbedUrl
   const absoluteSiteUrl = 'https://morphoglamping.com'
   const localeUrl = `${absoluteSiteUrl}/${locale}`
   const ogLocale = locale === 'es' ? 'es_CR' : 'en_US'
