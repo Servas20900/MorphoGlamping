@@ -25,7 +25,7 @@ const businessPhone = '+506 7071-1103'
 const whatsappNumber = '+506 7071-1103'
 const whatsappMessage = 'Hola, me interesa reservar una estadía en Morpho Glamping, del ______ al ______ .'
 const airbnbUrl = 'https://es-l.airbnb.com/rooms/1299488275343790947?guests=1&adults=1&s=67&unique_share_id=397abca1-d149-46e1-9d1b-aa591d423c2c'
-const googleMapsUrl = 'https://www.google.com/maps/@10.5438422,-84.8927285,61m/data=!3m1!1e3?entry=ttu&g_ep=EgoyMDI2MDUyMC4wIKXMDSoASAFQAw%3D%3D'
+const googleMapsUrl = 'https://maps.app.goo.gl/DUfFCKDb8SYvLgZSA'
 
 export const siteConfig = {
   contact: {
