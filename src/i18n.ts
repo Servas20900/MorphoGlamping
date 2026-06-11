@@ -231,7 +231,7 @@ const resources = {
         emailSubject: 'Morpho Glamping reservation enquiry',
       },
       footer: {
-        copy: 'Editorial landing page concept for Morpho Glamping in Nuevo Arenal, Costa Rica.',
+        copy: '© 2025 Morpho Glamping · Nuevo Arenal, Costa Rica',
       },
       seo: {
         title: 'Glamping Costa Rica en Lago Arenal | Morpho Glamping',
@@ -487,7 +487,7 @@ const resources = {
         emailSubject: 'Consulta de reserva Morpho Glamping',
       },
       footer: {
-        copy: 'Concepto de landing editorial para Morpho Glamping en Nuevo Arenal, Costa Rica.',
+        copy: '© 2025 Morpho Glamping · Nuevo Arenal, Costa Rica',
       },
       seo: {
         title: 'Glamping Costa Rica en Lago Arenal | Morpho Glamping',

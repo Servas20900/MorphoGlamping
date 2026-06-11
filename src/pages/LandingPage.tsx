@@ -131,7 +131,6 @@ export function LandingPage({ locale }: LandingPageProps) {
   const experienceCards = t('experience.cards', { returnObjects: true }) as Array<{ title: string; text: string }>
   const locationPoints = t('location.points', { returnObjects: true }) as string[]
   const faqItems = t('faq.items', { returnObjects: true }) as Array<{ question: string; answer: string }>
-  const reservePoints = t('reserve.points', { returnObjects: true }) as string[]
   const reservationEmailHref = buildReservationEmailHref(t('reserve.emailSubject'))
   const googleMapsEmbedUrl = buildGoogleMapsEmbedUrl(siteConfig.booking.googleMapsUrl)
   const absoluteSiteUrl = 'https://morphoglamping.com'
@@ -255,7 +254,6 @@ export function LandingPage({ locale }: LandingPageProps) {
   }
 
   const handleAvailabilityWhatsAppClick = () => trackEvent('conversion', 'click_whatsapp', 'availability')
-  const handleFooterWhatsAppClick = () => trackEvent('conversion', 'click_whatsapp', 'footer')
   const handleAirbnbClick = () => trackEvent('conversion', 'click_airbnb')
   const handlePhoneClick = () => trackEvent('conversion', 'click_phone')
 
@@ -549,24 +547,14 @@ export function LandingPage({ locale }: LandingPageProps) {
             className={`${sectionBase} min-h-[42vh] pb-[calc(clamp(2.5rem,5vw,4rem)+env(safe-area-inset-bottom,0px))]`}
           >
             <Reveal className="max-w-[40rem]">
-              <h2 className={`${sectionTitle} text-[clamp(2rem,4.5vw,3.2rem)] max-w-[14ch]`}>{t('reserve.title')}</h2>
+              <h2 className={`${sectionTitle} text-[clamp(2rem,4.5vw,3.2rem)]`}>{t('reserve.title')}</h2>
               <p className={`${sectionLead} max-w-[34rem]`}>{t('reserve.body')}</p>
 
-              <ul className="flex flex-wrap gap-2 mt-4 p-0 list-none" aria-label={t('reserve.title')}>
-                {reservePoints.map((point) => (
-                  <li key={point} className="px-3 py-[.4rem] border border-black/[.07] rounded-full bg-white/62 text-muted text-[.82rem]">
-                    {point}
-                  </li>
-                ))}
-              </ul>
-
-              <div className="flex flex-wrap gap-[.65rem] mt-5">
-                <a className={btnPrimary} href={reservationEmailHref || reserveHref}>
-                  {t('reserve.cta')}
-                </a>
+              {/* CTAs principales */}
+              <div className="flex flex-wrap gap-3 mt-8">
                 <a
-                  className={btnGhost}
-                  href={siteConfig.contact.whatsappHref || getLocalizedPath(locale, 'availability')}
+                  className={btnPrimary}
+                  href={siteConfig.contact.whatsappHref || reserveHref}
                   target={siteConfig.contact.whatsappHref ? '_blank' : undefined}
                   rel={siteConfig.contact.whatsappHref ? 'noreferrer' : undefined}
                   onClick={(e) => {
@@ -574,11 +562,11 @@ export function LandingPage({ locale }: LandingPageProps) {
                     else handleAvailabilityWhatsAppClick()
                   }}
                 >
-                  {t('reserve.whatsappCta')}
+                  WhatsApp
                 </a>
                 <a
                   className={btnGhost}
-                  href={siteConfig.booking.airbnbUrl || getLocalizedPath(locale, 'availability')}
+                  href={siteConfig.booking.airbnbUrl || reserveHref}
                   target={siteConfig.booking.airbnbUrl ? '_blank' : undefined}
                   rel={siteConfig.booking.airbnbUrl ? 'noreferrer' : undefined}
                   onClick={(e) => {
@@ -586,31 +574,26 @@ export function LandingPage({ locale }: LandingPageProps) {
                     else handleAirbnbClick()
                   }}
                 >
-                  {t('reserve.airbnbCta')}
+                  Airbnb
+                </a>
+                <a className={btnGhost} href={reservationEmailHref || reserveHref}>
+                  {t('reserve.cta')}
                 </a>
               </div>
 
-              <div className="flex flex-wrap gap-2 mt-5">
-                {[
-                  { href: siteConfig.contact.emailHref || reserveHref, label: siteConfig.contact.email, onClick: undefined },
-                  { href: siteConfig.contact.phoneHref || reserveHref, label: siteConfig.contact.phone, onClick: handlePhoneClick },
-                  { href: siteConfig.booking.airbnbUrl, label: 'Airbnb', onClick: handleAirbnbClick, external: true },
-                  { href: siteConfig.social.instagramUrl, label: 'Instagram', onClick: undefined, external: true },
-                  { href: siteConfig.social.tiktokUrl, label: 'TikTok', onClick: undefined, external: true },
-                  { href: siteConfig.contact.whatsappHref || reserveHref, label: 'WhatsApp', onClick: handleFooterWhatsAppClick, external: !!siteConfig.contact.whatsappHref },
-                  siteConfig.booking.googleMapsUrl ? { href: siteConfig.booking.googleMapsUrl, label: 'Google Maps', onClick: undefined, external: true } : null,
-                ].filter(Boolean).map((link) => (
-                  <a
-                    key={link!.label}
-                    href={link!.href}
-                    target={link!.external ? '_blank' : undefined}
-                    rel={link!.external ? 'noreferrer' : undefined}
-                    onClick={link!.onClick}
-                    className="inline-flex items-center min-h-[2.4rem] px-[.8rem] border border-black/[.07] rounded-full bg-white/72 text-ink text-[.86rem] no-underline transition-[transform,border-color,background-color] duration-[160ms] hover:-translate-y-px hover:border-accent/26 hover:bg-accent/[.08]"
-                  >
-                    {link!.label}
-                  </a>
-                ))}
+              {/* Contacto secundario */}
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-6 pt-6 border-t border-black/[.07]">
+                <a href={siteConfig.contact.emailHref || reserveHref} className="text-[.85rem] text-muted hover:text-ink transition-colors duration-150 no-underline">
+                  {siteConfig.contact.email}
+                </a>
+                <a href={siteConfig.contact.phoneHref || reserveHref} onClick={handlePhoneClick} className="text-[.85rem] text-muted hover:text-ink transition-colors duration-150 no-underline">
+                  {siteConfig.contact.phone}
+                </a>
+                <a href={siteConfig.social.instagramUrl} target="_blank" rel="noreferrer" className="text-[.85rem] text-muted hover:text-ink transition-colors duration-150 no-underline">Instagram</a>
+                <a href={siteConfig.social.tiktokUrl} target="_blank" rel="noreferrer" className="text-[.85rem] text-muted hover:text-ink transition-colors duration-150 no-underline">TikTok</a>
+                {siteConfig.booking.googleMapsUrl ? (
+                  <a href={siteConfig.booking.googleMapsUrl} target="_blank" rel="noreferrer" className="text-[.85rem] text-muted hover:text-ink transition-colors duration-150 no-underline">Google Maps</a>
+                ) : null}
               </div>
             </Reveal>
           </section>
