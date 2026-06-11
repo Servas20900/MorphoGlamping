@@ -220,7 +220,7 @@ const resources = {
         ],
       },
       reserve: {
-        title: 'Reserve the quiet',
+        title: 'Reserve',
         body:
           'Use WhatsApp or Airbnb to continue. We keep the booking flow simple and human for guests searching glamping in Arenal and Lago Arenal.',
         points: ['WhatsApp booking', 'Airbnb booking', 'Direct contact'],
@@ -476,7 +476,7 @@ const resources = {
         ],
       },
       reserve: {
-        title: 'Reservá el silencio',
+        title: 'Reservar',
         body:
           'Usá WhatsApp o Airbnb para continuar. Mantenemos la reserva simple y humana para quienes buscan glamping en Arenal y Lago Arenal.',
         points: ['Reserva por WhatsApp', 'Reserva en Airbnb', 'Contacto directo'],
