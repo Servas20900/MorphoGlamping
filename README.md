@@ -1,6 +1,6 @@
 # Morpho Glamping
 
-Premium editorial landing page concept for Morpho Glamping in Nuevo Arenal, Costa Rica.
+Landing page concept for Morpho Glamping in Nuevo Arenal, Costa Rica.
 
 ## Stack
 
