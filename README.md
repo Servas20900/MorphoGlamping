@@ -32,7 +32,6 @@ Copy [`.env.example`](.env.example) to `.env` and complete these values before p
 - `VITE_AIRBNB_ICAL_URL` for the Airbnb calendar feed URL, which is iCal, not an API key.
 - `VITE_GOOGLE_MAPS_URL` for the optional map link.
 
-If a value is missing, the site falls back to a safe default or an internal booking section so it keeps working while you finish the environment setup.
 
 ## Build
 
